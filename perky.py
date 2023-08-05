@@ -12,13 +12,13 @@ w4 = 0.63
 b3 = 0
 
 def softplus(inputval):
-    return np.log(1+np.exp(inputval))
+    return np.log(1 + np.exp(inputval))
 
 # sets preliminary values for blue line
 for i in range(3):  # Loop 3 times
 
     if i == 0:
-        userInput1 = trainingData[0,0]
+        userInput1 =  trainingData[0,0]  
         equation1 = w1 * userInput1 + b1
         yval1 = softplus(equation1)
         yval1f = yval1*w3
@@ -111,7 +111,7 @@ stepsizeb3 = derivativeb3 * 0.09
 b3 = b3 - stepsizeb3
 
 
-for i in range(100000):
+for iterator in range(1000):
 
     for i in range(3):  # Loop 3 times
 
@@ -154,7 +154,8 @@ for i in range(100000):
     output2 = yval2f + yval2bf + b3
     output3 = yval3f + yval3bf + b3
 
-    
+    if iterator % 100 == 0:
+        print(output1, output2, output3) 
     
     # blue line derivative 
     derivativew1 = derW1(trainingData[0,1],output1,equation1,userInput1) + derW1(trainingData[1,1], output2, equation2, userInput2) + derW1(trainingData[2,1], output3, equation3, userInput3)
@@ -188,7 +189,5 @@ for i in range(100000):
     b3 = b3 - stepsizeb3
 
 
-    for i in range(1000):
-        if i % 10 == 0:
-            print(output1, output2, output3)
+
     
