@@ -15,7 +15,7 @@ b3 = 0
 def softplus(inputval):
     return np.log(1+np.exp(inputval))
 
-# sets preliminary values 
+# sets preliminary values for blue line
 for i in range(3):  # Loop 3 times
 
     if i == 0:
@@ -34,6 +34,7 @@ for i in range(3):  # Loop 3 times
         yval3 = softplus(equation3)
         yval3f = yval3*w3 
 
+# sets preliminary values for orange line
 for i in range(3):  # Loop 3 times
 
     if i == 0:
@@ -62,10 +63,10 @@ def derW1(observed ,output, equation, userinput):
 
 def derW2(observed ,output, equation, userinput):
     return -2 * (observed - output) * w4 * (np.exp(equation)/(1 + np.exp(equation))) * userinput
-
+#f represents the values prior to yval"f" so just yval
 def derW3(observed, output, f):
     return -2 * (observed - output) * f
-
+#bf represents the values prior to the yval"bf" so just yvalb
 def derW4(observed, output, bf):
     return -2 * (observed - output) * bf
 
@@ -77,3 +78,35 @@ def derb2(observed, output, equation):
 
 def derb3(observed, output):
     return -2 * (observed - output) 
+
+
+# blue line derivative 
+derivativew1 = derW1(trainingData[0,1],output1,equation1,userInput1) + derW1(trainingData[1,1], output2, equation2, userInput2) + derW1(trainingData[2,1], output3, equation3, userInput3)
+stepsizew1 = derivativew1 * 0.095
+w1 = w1 - stepsizew1
+
+derivativeb1 = derb1(trainingData[0,1], output1, equation1) + derb1(trainingData[1,1], output2, equation2) + derb1(trainingData[2,1], output3, equation3)
+stepsizeb1 = derivativeb1 * 0.09
+b1 = b1 - stepsizeb1
+
+derivativew3 = derW3(trainingData[0,1], output1, yval1) + derW3(trainingData[1,1], output2, yval2) + derW3(trainingData[2,1], output3, yval3)
+stepsizew3 = derivativew3 * 0.099
+w3 = w3 - stepsizew3
+
+# orange line derivatives
+derivativew2 = derW2(trainingData[0,1], output1, equation1b, userInput1b) + derW2(trainingData[1,1], output2, equation2b, userInput2b) + derW2(trainingData[2,1], output3, equation3b, userInput3b)
+stepsizew2 = derivativew2 * 0.095
+w2 = w2 - stepsizew2
+
+derivativeb2 = derb2(trainingData[0,1], output1, equation1b) + derb2(trainingData[1,1], output2, equation2b) + derb2(trainingData[2,1], output3, equation3b)
+stepsizeb2 = derivativeb2 * 0.09
+b2 = b2 - stepsizeb2
+
+derivativew4 = derW4(trainingData[0,1], output1, yval1b) + derW4(trainingData[1,1], output2, yval2b) + derW4(trainingData[2,1], output3, yval3b)
+stepsizew4 = derivativew4 * 0.09
+w4 = w4 - stepsizew4
+
+# final bias calculation
+derivativeb3 = derb3(trainingData[0,1], output1) + derb3(trainingData[1,1], output2) + derb3(trainingData[2,1], output3)
+stepsizeb3 = derivativeb3 * 0.09
+b3 = b3 - stepsizeb3
