@@ -1,6 +1,51 @@
 import numpy as np
 
-trainingData = np.array([[0,0], [0.5,1], [1,0]])
+#entirely training data
+
+# Generate x-axis values from 0 to 0.3 (exclusive) with a step of 0.01
+x_axis_values_1 = np.arange(0, 0.31, 0.01)
+
+# Create y-axis values filled with 0 (same length as x_axis_values_1)
+y_axis_values_1 = np.zeros_like(x_axis_values_1)
+
+# Combine x and y axis values into the first part of the training data array
+trainingData_1 = np.column_stack((x_axis_values_1, y_axis_values_1))
+
+# Generate x-axis values from 0.31 to 0.35 (inclusive) with a step of 0.01
+x_axis_values_2 = np.arange(0.31, 0.35, 0.01)
+
+# Create y-axis values filled with 0.95 (same length as x_axis_values_2)
+y_axis_values_2 = np.full_like(x_axis_values_2, 0.95)
+
+# Combine x and y axis values into the second part of the training data array
+trainingData_2 = np.column_stack((x_axis_values_2, y_axis_values_2))
+
+# Generate x-axis values from 0.35 to 0.40 (inclusive) with a step of 0.01
+x_axis_values_3 = np.arange(0.35, 0.41, 0.01)
+
+# Create y-axis values with 1 for 0.35 and 0.95 for values from 0.36 to 0.39 and 0 for 0.4
+y_axis_values_3 = np.where(x_axis_values_3 == 0.35, 1, np.where((x_axis_values_3 >= 0.36) & (x_axis_values_3 <= 0.39), 0.95, 0))
+
+# Combine x and y axis values into the third part of the training data array
+trainingData_3 = np.column_stack((x_axis_values_3, y_axis_values_3))
+
+# Generate x-axis values from 0.41 to 1 (inclusive) with a step of 0.01
+x_axis_values_4 = np.arange(0.41, 1.001, 0.01)
+
+# Create y-axis values filled with 0 (same length as x_axis_values_4)
+y_axis_values_4 = np.zeros_like(x_axis_values_4)
+
+# Combine x and y axis values into the fourth part of the training data array
+trainingData_4 = np.column_stack((x_axis_values_4, y_axis_values_4))
+
+# Concatenate all four training data arrays to create the final training data
+trainingData = np.concatenate((trainingData_1, trainingData_2, trainingData_3, trainingData_4))
+
+# Find the index of the data point with x=0.3 and set its y-value to 0
+index_x_03 = np.where(trainingData[:, 0] == 0.3)
+trainingData[index_x_03, 1] = 0
+
+
 
 # Initial values
 w1 = 2.74
@@ -19,15 +64,16 @@ oterator = 0
 bluelinearr = []
 orangelinearr = []
 # sets preliminary values for blue line
+equation1list = []
 while iterator <= 1:  # Loop 3 times
     userInput1 = trainingData[0,0] + iterator  
     equation1 = w1 * userInput1 + b1
+    equation1list.append(equation1)
     yval1 = softplus(equation1)
     yval1f = yval1*w3
     bluelinearr.append(yval1f)
     iterator += 0.01
     iterator = round(iterator, 2)
-
 while oterator <= 1:
     userInput1b = trainingData[0,0] + oterator
     equation1b = w2 * userInput1b + b2
@@ -40,5 +86,19 @@ while oterator <= 1:
 interator = 0
 sumlist = []
 while interator <= 100:
-    sumlist.append(orangelinearr[interator] + bluelinearr[interator])
+    sumlist.append(orangelinearr[interator] + bluelinearr[interator] + b3)
     interator += 1
+
+def derW1(observed ,output, equation, userinput):
+    return -2 * (observed - output) * w3 * (np.exp(equation)/(1 + np.exp(equation))) * userinput
+
+derivativew1 = []
+funtime = 0
+while funtime <= 100:
+    derivativew1.append(derW1(trainingData[funtime,1], sumlist[funtime], equation1list[funtime], trainingData[funtime,0]))
+    funtime += 1
+derivativew1 = sum(derivativew1)
+
+# derivativew1 = derW1(trainingData[0,1],output1,equation1,userInput1) + derW1(trainingData[1,1], output2, equation2, userInput2) + derW1(trainingData[2,1], output3, equation3, userInput3)
+# stepsizew1 = derivativew1 * 0.095
+# w1 = w1 - stepsizew1
