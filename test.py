@@ -92,13 +92,22 @@ while interator <= 100:
 def derW1(observed ,output, equation, userinput):
     return -2 * (observed - output) * w3 * (np.exp(equation)/(1 + np.exp(equation))) * userinput
 
-derivativew1 = []
+derivativew1list = []
 funtime = 0
-while funtime <= 100:
-    derivativew1.append(derW1(trainingData[funtime,1], sumlist[funtime], equation1list[funtime], trainingData[funtime,0]))
-    funtime += 1
-derivativew1 = sum(derivativew1)
+derivativew1 = 0
 
-# derivativew1 = derW1(trainingData[0,1],output1,equation1,userInput1) + derW1(trainingData[1,1], output2, equation2, userInput2) + derW1(trainingData[2,1], output3, equation3, userInput3)
-# stepsizew1 = derivativew1 * 0.095
-# w1 = w1 - stepsizew1
+while funtime <= 100:
+    derivative_value = derW1(trainingData[funtime, 1], sumlist[funtime], equation1list[funtime], trainingData[funtime, 0])
+    derivativew1list.append(derivative_value)
+    derivativew1 += derivative_value
+    stepsizew1 = derivativew1 * 0.095
+    w1 = w1 - stepsizew1
+    print(w1)
+    funtime += 1
+
+
+# for reference purposes, I double checked
+# for i in range(1000):
+#     derivativew1b = derivativew1list[35] + derivativew1list[100]
+#     stepsizew1b = derivativew1b * 0.095
+#     w1 = w1 - stepsizew1b

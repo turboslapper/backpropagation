@@ -154,13 +154,14 @@ for iterator in range(1000):
     output2 = yval2f + yval2bf + b3
     output3 = yval3f + yval3bf + b3
 
-    if iterator % 100 == 0:
-        print(output1, output2, output3) 
+    # if iterator % 100 == 0:
+    #     print(output1, output2, output3) 
     
     # blue line derivative 
     derivativew1 = derW1(trainingData[0,1],output1,equation1,userInput1) + derW1(trainingData[1,1], output2, equation2, userInput2) + derW1(trainingData[2,1], output3, equation3, userInput3)
     stepsizew1 = derivativew1 * 0.095
     w1 = w1 - stepsizew1
+    print(w1)
 
     derivativeb1 = derb1(trainingData[0,1], output1, equation1) + derb1(trainingData[1,1], output2, equation2) + derb1(trainingData[2,1], output3, equation3)
     stepsizeb1 = derivativeb1 * 0.09
