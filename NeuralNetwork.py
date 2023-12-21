@@ -83,7 +83,7 @@ for iteration in range(100000):
             output3 = output
 
     # Update weights and biases
-    learning_rate = 0.01  # Example learning rate, adjust as needed
+    learning_rate = 0.1  # Example learning rate, adjust as needed
     w1 -= learning_rate * sum_derivatives_w1
     b1 -= learning_rate * sum_derivatives_b1
     w3 -= learning_rate * sum_derivatives_w3
