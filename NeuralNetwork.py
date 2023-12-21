@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 trainingData = np.array([[0,0], [0.5,1], [1,0]])
 
@@ -13,6 +14,8 @@ b3 = 0
 
 def softplus(inputval):
     return np.log(1+np.exp(inputval))
+
+outputs1, outputs2, outputs3 = [], [], []
 
 # sets preliminary values for blue line
 for i in range(3):  # Loop 3 times
@@ -154,6 +157,22 @@ for i in range(100000):
     output2 = yval2f + yval2bf + b3
     output3 = yval3f + yval3bf + b3
 
+    outputs1.append(output1)
+    outputs2.append(output2)
+    outputs3.append(output3)
+
+
+    if i % 1000 == 0:
+        plt.figure(figsize=(10, 6))
+        plt.plot(outputs1, label='Output 1')
+        plt.plot(outputs2, label='Output 2')
+        plt.plot(outputs3, label='Output 3')
+        plt.title(f'Neural Network Outputs - Iteration {i}')
+        plt.xlabel('Iteration')
+        plt.ylabel('Output Values')
+        plt.legend()
+        plt.show()
+
     
     
     # blue line derivative 
@@ -187,8 +206,9 @@ for i in range(100000):
     stepsizeb3 = derivativeb3 * 0.09
     b3 = b3 - stepsizeb3
 
-
     for i in range(1000):
         if i % 100 == 0:
             print(output1, output2, output3)
+
+            
     
